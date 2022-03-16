@@ -6,7 +6,9 @@ def input_students
     until name.empty? do
       puts "Enter hobby for #{name}" 
       hobby = gets.chomp  
-      students.push({name: name, cohort: :november, hobby: hobby})
+      puts "Enter the cohort for #{name}"
+      cohort = gets.chomp.capitalize
+      students.push({name: name, cohort: cohort, hobby: hobby})
       puts "now we have #{students.count} number of students"
       name = gets.chomp.capitalize
     end
@@ -20,14 +22,13 @@ def input_students
   
   def print(students)
     @count = 0
-    puts "Please enter the first letter you want to filter on: "
-    alpha = gets.chomp.capitalize
-    students.each do |name|
-      if name[:name].split("").first == alpha.to_s
+    
+    students = students.sort_by {|a| a[:cohort]}
+      students.each do |name|
         puts "#{@count+1}. #{name[:name]} Cohort: (#{name[:cohort]})   Hobby: #{name[:hobby]}"
         @count += 1
-      end
-    end
+      end   
+    
   end
   
   def print_footer(names)
