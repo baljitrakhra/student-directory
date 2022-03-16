@@ -1,6 +1,6 @@
 # let's put all the students in the array
 
-students = [
+students1 = [
     {name: "Dr. Hannibal Lecter", cohort: :november},
     {name: "Darth Vader", cohort: :november},
     {name: "Nurse Ratched", cohort: :november},
@@ -13,6 +13,20 @@ students = [
     {name: "Joffrey Baratheon", cohort: :november},
     {name: "Norman Bates", cohort: :november}
   ]
+
+def input_students
+  puts "Please enter the names of the students"
+  puts "To finish, just hit return twice"
+  students = [] # created an empty array
+  name = gets.chomp.capitalize
+  until name.empty? do
+    students.push({name: name, cohort: :november})
+    puts "now we have #{students.count} number of students"
+    name = gets.chomp.capitalize
+  end
+  students
+end
+        
 def print_header
   puts "The students of Villains Acadmey"
   puts "--------------------------------"
@@ -29,7 +43,8 @@ def print_footer(names)
 end
 
 # nothing happens until we call the methods
-
+students = input_students
+print students
 print_header
 print(students)
 print_footer(students)
