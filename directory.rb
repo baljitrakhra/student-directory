@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 # let's put all the students in the array
 
 students1 = [
@@ -16,7 +14,6 @@ students1 = [
     {name: "Norman Bates", cohort: :november}
   ]
 
->>>>>>> f5701c06b500ae8d364fc8f1318d5522b7ef473a
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
