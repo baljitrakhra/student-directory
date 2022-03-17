@@ -16,6 +16,8 @@ def process(selection)
         show_students
       when "3"
         save_students
+      when "4"
+        load_Students
       when "9"
         # Exit
         exit
@@ -29,6 +31,7 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
+  puts "4. Load the list from students.csv"
   puts "9. Exit" # 9 beacuse we'llbe adding more items  
 end
 
@@ -72,5 +75,13 @@ def save_students
   end
   file.close
 end
+
+def load_Students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(",")
+    @students<< {name: name, cohort: cohort.to_sym}
+  end
+end    
 # nothing happens until we call the methods
 interactive_menu
