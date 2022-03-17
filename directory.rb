@@ -2,7 +2,7 @@
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -40,14 +40,15 @@ def show_students
   print_students_list
   print_footer
 end  
+
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  name = gets.chomp.capitalize
+  name = STDIN.gets.chomp.capitalize
   until name.empty? do
     @students.push({name: name, cohort: :november})
     puts "now we have #{@students.count} number of students"
-    name = gets.chomp.capitalize
+    name = STDIN.gets.chomp.capitalize
   end
 end
         
@@ -76,12 +77,25 @@ def save_students
   file.close
 end
 
-def load_Students
-  file = File.open("students.csv", "r")
+def load_Students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
     @students<< {name: name, cohort: cohort.to_sym}
   end
 end    
-# nothing happens until we call the methods
-interactive_menu
+
+def try_load_students
+  filename = ARGV.first # first argument from the commandline 
+  return if filename.nil? # get out of the method if no file name is given
+  if File.exists? (filename)
+    load_Students(filename)
+    puts "Loaded #{@students.count} from #{filename} "
+  else
+    puts "Sorry, #{filename} doesn't exist"
+    exit
+  end
+end
+  # nothing happens until we call the methods
+  try_load_students
+  interactive_menu
