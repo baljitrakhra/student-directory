@@ -17,9 +17,10 @@ def process(selection)
       when "3"
         save_students
       when "4"
-        load_Students
+        load_Students(ask_filename)
       when "9"
         # Exit
+        puts "Bye! closing the application"
         exit
       else
         puts "I don't know what you meant,try again"
@@ -46,12 +47,17 @@ def input_students
   puts "To finish, just hit return twice"
   name = STDIN.gets.chomp.capitalize
   until name.empty? do
-    @students.push({name: name, cohort: :november})
+    cohort = :november
+    update_students(name,cohort)
     puts "now we have #{@students.count} number of students"
     name = STDIN.gets.chomp.capitalize
   end
 end
-        
+
+def update_students(name, cohort = "november".to_sym)
+  @students<<({name: name, cohort: :november})
+end
+
 def print_header
   puts "The students of Villains Acadmey"
   puts "--------------------------------"
@@ -67,13 +73,20 @@ def print_footer
   puts "Overall, we have #{@students.count} great students "
 end
 
+def ask_filename
+  puts " Please enter the filename "
+  filename = gets.chomp
+  return filename
+end
+
 def save_students
-  file = File.open("students.csv", "w")   
+  file = File.open(ask_filename, "w")   
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
+  puts "Your file is updated"
   file.close
 end
 
@@ -81,13 +94,18 @@ def load_Students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
-    @students<< {name: name, cohort: cohort.to_sym}
+    update_students(name,cohort.to_sym) 
   end
+  puts "#{filename} used to load the list"
 end    
 
 def try_load_students
   filename = ARGV.first # first argument from the commandline 
-  return if filename.nil? # get out of the method if no file name is given
+  
+  if filename.nil? # get out of the method if no file name is given
+     filename = ask_filename
+  end
+  
   if File.exists? (filename)
     load_Students(filename)
     puts "Loaded #{@students.count} from #{filename} "
